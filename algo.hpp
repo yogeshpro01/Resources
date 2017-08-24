@@ -3,6 +3,7 @@
 
 #include<vector>
 #include<stddef.h>
+#include<queue>
 
 /*
     Copyrights 2017 ALGO.API
@@ -40,6 +41,8 @@ template <typename T>
 T merge(T a, T b){
     return a + b;
 }
+
+
 
 /*
     SEGMENT TREES
@@ -252,6 +255,63 @@ class binary_indexed_tree{
         }
 };
 
+/*
+    FLOYD-WARSHALL SHORTEST PATH
+*/
+
+void floyd_warshall(int graph[][MAXN],int v,int dist[][MAXN]){
+    for(int i = 0; i < v; i++){
+        for(int j = 0; j < v; j++){
+            if( i == j ) dist[i][j] = 0;
+            else dist[i][j] = graph[i][j];
+        }
+    }
+
+    for(int k = 0; k < v; k++){
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < v; j++){
+
+                if(dist[i][k] != INT_MAX && dist[k][j] != INT_MAX){
+                    if(dist[i][k] + dist[k][j] < dist[i][j]){
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*
+    DIJKSTRA's SHORTEST PATH
+*/
+
+void dijkstra(std::vector< std::pair<int,int> >graph[], int v, int source, int dist[]){
+    std::priority_queue< std::pair<int,int> , std::vector< std::pair<int,int> > , std::greater< std::pair<int,int> > > pq;
+    for(int i=1; i<=v; i++) dist[i] = INT_MAX;
+    int vis[v+1] = { };
+    dist[source] = 0;
+    pq.push(std::make_pair(dist[source],source));
+    while(!pq.empty()){
+        int node = pq.top().first , cur = pq.top().second;
+        pq.pop();
+        if(dist[node] == cur && !vis[node]){
+            for(int i=0; i<graph[node].size(); i++){
+                int v = graph[node][i].first, d = graph[node][i].second;
+                if(cur + d < dist[v]){
+                    dist[v] = cur + d;
+                    pq.push_back(std::make_pair(dist[v],v));
+                }
+            }
+            vis[node] = 1;
+        }
+    }
+}
+
+/*
+
+*/
 
 #endif
 
