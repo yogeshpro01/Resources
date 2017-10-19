@@ -6,7 +6,8 @@
 #include<queue>
 
 /*
-    Copyrights 2017 ALGO.API
+    Author - Yogesh Aggarwal
+    Copyrights 2017 ALGO.API 
 */
 
 template <typename T>
